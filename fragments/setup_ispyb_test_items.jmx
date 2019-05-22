@@ -16,35 +16,35 @@
       <hashTree>
         <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
           <collectionProp name="Arguments.arguments">
-            <elementProp name="csv.dir" elementType="Argument">
-              <stringProp name="Argument.name">csv.dir</stringProp>
-              <stringProp name="Argument.value">jmeter-tests/files</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
             <elementProp name="csv.scripts.numrows" elementType="Argument">
               <stringProp name="Argument.name">csv.scripts.numrows</stringProp>
-              <stringProp name="Argument.value">jmeter-tests/scripts/csv_set_num_rows.sh</stringProp>
+              <stringProp name="Argument.value">scripts/get_num_rows_csv.sh</stringProp>
               <stringProp name="Argument.desc">Script that returns number of rows in csv file</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="csv.filename.proposals" elementType="Argument">
               <stringProp name="Argument.name">csv.filename.proposals</stringProp>
-              <stringProp name="Argument.value">proposals.csv</stringProp>
+              <stringProp name="Argument.value">files/proposals.csv</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="csv.filename.persons" elementType="Argument">
               <stringProp name="Argument.name">csv.filename.persons</stringProp>
-              <stringProp name="Argument.value">persons.csv</stringProp>
+              <stringProp name="Argument.value">files/persons.csv</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="csv.filename.laboratories" elementType="Argument">
               <stringProp name="Argument.name">csv.filename.laboratories</stringProp>
-              <stringProp name="Argument.value">laboratories.csv</stringProp>
+              <stringProp name="Argument.value">files/laboratories.csv</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="csv.filename.labcontacts" elementType="Argument">
               <stringProp name="Argument.name">csv.filename.labcontacts</stringProp>
-              <stringProp name="Argument.value">labcontacts.csv</stringProp>
+              <stringProp name="Argument.value">files/labcontacts.csv</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="csv.filename.registered_dewars" elementType="Argument">
+              <stringProp name="Argument.name">csv.filename.registered_dewars</stringProp>
+              <stringProp name="Argument.value">files/registered_dewars.csv</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
@@ -54,7 +54,7 @@
         <hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Proposals" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters">${csv.dir}/${csv.filename.proposals}</stringProp>
+            <stringProp name="parameters">${csv.filename.proposals}</stringProp>
             <stringProp name="filename">${csv.scripts.numrows}</stringProp>
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="script"></stringProp>
@@ -69,6 +69,16 @@
               <stringProp name="RegexExtractor.match_number"></stringProp>
             </RegexExtractor>
             <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Ignore result in listener" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">// Tell Jmeter to ignore this result (does not show in list of samplers)
+prev.setIgnore();
+log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&quot;) + &quot; samples&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
           </hashTree>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -76,7 +86,7 @@
           </LoopController>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">${csv.dir}/${csv.filename.proposals}</stringProp>
+              <stringProp name="filename">${csv.filename.proposals}</stringProp>
               <stringProp name="fileEncoding">UTF-8</stringProp>
               <stringProp name="variableNames">propCode,propNumber,propTitle</stringProp>
               <boolProp name="ignoreFirstLine">true</boolProp>
@@ -105,7 +115,7 @@
         <hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Persons" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters">${csv.dir}/${csv.filename.persons}</stringProp>
+            <stringProp name="parameters">${csv.filename.persons}</stringProp>
             <stringProp name="filename">${csv.scripts.numrows}</stringProp>
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="script"></stringProp>
@@ -120,6 +130,16 @@
               <stringProp name="RegexExtractor.match_number"></stringProp>
             </RegexExtractor>
             <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Ignore result in listener" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">// Tell Jmeter to ignore this result (does not show in list of samplers)
+prev.setIgnore();
+log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&quot;) + &quot; samples&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
           </hashTree>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -127,7 +147,7 @@
           </LoopController>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">${csv.dir}/${csv.filename.persons}</stringProp>
+              <stringProp name="filename">${csv.filename.persons}</stringProp>
               <stringProp name="fileEncoding">UTF-8</stringProp>
               <stringProp name="variableNames">login,title,name,surname,email</stringProp>
               <boolProp name="ignoreFirstLine">true</boolProp>
@@ -156,7 +176,7 @@
         <hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Rows" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters">${csv.dir}/${csv.filename.laboratories}</stringProp>
+            <stringProp name="parameters">${csv.filename.laboratories}</stringProp>
             <stringProp name="filename">${csv.scripts.numrows}</stringProp>
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="script"></stringProp>
@@ -171,6 +191,16 @@
               <stringProp name="RegexExtractor.match_number"></stringProp>
             </RegexExtractor>
             <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Ignore result in listener" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">// Tell Jmeter to ignore this result (does not show in list of samplers)
+prev.setIgnore();
+log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&quot;) + &quot; samples&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
           </hashTree>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -178,7 +208,7 @@
           </LoopController>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">${csv.dir}/${csv.filename.laboratories}</stringProp>
+              <stringProp name="filename">${csv.filename.laboratories}</stringProp>
               <stringProp name="fileEncoding">UTF-8</stringProp>
               <stringProp name="variableNames">name,address,postcode,city,country</stringProp>
               <boolProp name="ignoreFirstLine">true</boolProp>
@@ -207,7 +237,7 @@
         <hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Labcontacts" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters">${csv.dir}/${csv.filename.labcontacts}</stringProp>
+            <stringProp name="parameters">${csv.filename.labcontacts}</stringProp>
             <stringProp name="filename">${csv.scripts.numrows}</stringProp>
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="script"></stringProp>
@@ -222,6 +252,16 @@
               <stringProp name="RegexExtractor.match_number"></stringProp>
             </RegexExtractor>
             <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Ignore result in listener" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">// Tell Jmeter to ignore this result (does not show in list of samplers)
+prev.setIgnore();
+log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&quot;) + &quot; samples&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
           </hashTree>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -229,7 +269,7 @@
           </LoopController>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">${csv.dir}/${csv.filename.labcontacts}</stringProp>
+              <stringProp name="filename">${csv.filename.labcontacts}</stringProp>
               <stringProp name="fileEncoding">UTF-8</stringProp>
               <stringProp name="variableNames">labName,person,proposal,courierCompany,courierAccount</stringProp>
               <boolProp name="ignoreFirstLine">true</boolProp>
@@ -274,6 +314,92 @@
                 <stringProp name="resultSetHandler">Store as String</stringProp>
                 <stringProp name="resultVariable"></stringProp>
                 <stringProp name="variableNames">proposalId</stringProp>
+              </JDBCPreProcessor>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Add Registered Dewars" enabled="true"/>
+        <hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Dewars" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters">${csv.filename.registered_dewars}</stringProp>
+            <stringProp name="filename">${csv.scripts.numrows}</stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script"></stringProp>
+          </JSR223Sampler>
+          <hashTree>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">csv.numRows</stringProp>
+              <stringProp name="RegexExtractor.regex">.*</stringProp>
+              <stringProp name="RegexExtractor.template">$0$</stringProp>
+              <stringProp name="RegexExtractor.default"></stringProp>
+              <stringProp name="RegexExtractor.match_number"></stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Ignore result in listener" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">// Tell Jmeter to ignore this result (does not show in list of samplers)
+prev.setIgnore();
+log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&quot;) + &quot; samples&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${csv.numRows}</stringProp>
+          </LoopController>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+              <stringProp name="filename">${csv.filename.registered_dewars}</stringProp>
+              <stringProp name="fileEncoding">UTF-8</stringProp>
+              <stringProp name="variableNames">facilityCode,proposal,labContactName,purchaseDate</stringProp>
+              <boolProp name="ignoreFirstLine">true</boolProp>
+              <stringProp name="delimiter">;</stringProp>
+              <boolProp name="quotedData">false</boolProp>
+              <boolProp name="recycle">false</boolProp>
+              <boolProp name="stopThread">false</boolProp>
+              <stringProp name="shareMode">shareMode.group</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Add Dewar ${facilityCode}" enabled="true">
+              <stringProp name="dataSource">${db.pool}</stringProp>
+              <stringProp name="query">INSERT INTO DewarRegistry (proposalId, labContactId, facilityCode, purchaseDate) VALUES (?, ?, ?, ?)</stringProp>
+              <stringProp name="queryArguments">${proposalId_1},${labcontactId_1},${facilityCode},${purchaseDate}</stringProp>
+              <stringProp name="queryArgumentsTypes">INTEGER,INTEGER,VARCHAR,VARCHAR</stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Prepared Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="Get ProposalId" enabled="true">
+                <stringProp name="dataSource">${db.pool}</stringProp>
+                <stringProp name="queryType">Prepared Select Statement</stringProp>
+                <stringProp name="query">SELECT proposalId FROM Proposal WHERE CONCAT(proposalCode, proposalNumber) = ?</stringProp>
+                <stringProp name="queryArguments">${proposal}</stringProp>
+                <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+                <stringProp name="variableNames">proposalId</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCPreProcessor>
+              <hashTree/>
+              <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="Get LabContactId" enabled="true">
+                <stringProp name="dataSource">${db.pool}</stringProp>
+                <stringProp name="queryType">Prepared Select Statement</stringProp>
+                <stringProp name="query">SELECT labContactId FROM LabContact WHERE cardName = ?</stringProp>
+                <stringProp name="queryArguments">${labContactName}</stringProp>
+                <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+                <stringProp name="variableNames">labcontactId</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCPreProcessor>
               <hashTree/>
             </hashTree>

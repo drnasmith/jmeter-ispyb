@@ -15,22 +15,37 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="db.pool" elementType="Argument">
             <stringProp name="Argument.name">db.pool</stringProp>
-            <stringProp name="Argument.value">ispyb</stringProp>
+            <stringProp name="Argument.value">${__P(db.pool,ispyb)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="db.name" elementType="Argument">
             <stringProp name="Argument.name">db.name</stringProp>
-            <stringProp name="Argument.value">dbname</stringProp>
+            <stringProp name="Argument.value">${__P(db.name, ispyb)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="db.host" elementType="Argument">
             <stringProp name="Argument.name">db.host</stringProp>
-            <stringProp name="Argument.value">hostname</stringProp>
+            <stringProp name="Argument.value">${__P(db.host,localhost)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="db.port" elementType="Argument">
             <stringProp name="Argument.name">db.port</stringProp>
-            <stringProp name="Argument.value">3306</stringProp>
+            <stringProp name="Argument.value">${__P(db.port,3306)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="db.password" elementType="Argument">
+            <stringProp name="Argument.name">db.password</stringProp>
+            <stringProp name="Argument.value">${__P(db.password,ispyb)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="db.user" elementType="Argument">
+            <stringProp name="Argument.name">db.user</stringProp>
+            <stringProp name="Argument.value">${__P(db.user,ispyb)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="csv.filename.registered_dewars" elementType="Argument">
+            <stringProp name="Argument.name">csv.filename.registered_dewars</stringProp>
+            <stringProp name="Argument.value">files/registered_dewars.csv</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -44,12 +59,12 @@
         <stringProp name="dbUrl">jdbc:mysql://${db.host}:${db.port}/${db.name}</stringProp>
         <stringProp name="driver">com.mysql.jdbc.Driver</stringProp>
         <boolProp name="keepAlive">true</boolProp>
-        <stringProp name="password">dbpassword</stringProp>
+        <stringProp name="password">${db.password}</stringProp>
         <stringProp name="poolMax">0</stringProp>
         <stringProp name="timeout">10000</stringProp>
         <stringProp name="transactionIsolation">DEFAULT</stringProp>
         <stringProp name="trimInterval">60000</stringProp>
-        <stringProp name="username">dbuser</stringProp>
+        <stringProp name="username">${db.user}</stringProp>
       </JDBCDataSource>
       <hashTree/>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
@@ -67,42 +82,57 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="List Proposals" enabled="true">
-          <stringProp name="dataSource">${db.pool}</stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="query">SELECT proposalCode, proposalNumber, title FROM Proposal</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Lab Contacts" enabled="true">
-          <stringProp name="dataSource">${db.pool}</stringProp>
-          <stringProp name="query">SELECT * FROM LabContact</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Labs" enabled="true">
-          <stringProp name="dataSource">${db.pool}</stringProp>
-          <stringProp name="query">SELECT * FROM Laboratory</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="View Database" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="List Proposals" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT proposalCode, proposalNumber, title FROM Proposal</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Lab Contacts" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="query">SELECT * FROM LabContact</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Reg Dewars" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="query">SELECT * FROM DewarRegistry</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Labs" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="query">SELECT * FROM Laboratory</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
       </hashTree>
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
@@ -159,7 +189,7 @@
         </DebugSampler>
         <hashTree/>
         <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="Include Setup" enabled="true">
-          <stringProp name="IncludeController.includepath">/home/acr22938/workspace/tests/jmeter/db/jmeter-tests/fragments/setup_ispyb_test_items.jmx</stringProp>
+          <stringProp name="IncludeController.includepath">fragments/setup_ispyb_test_items.jmx</stringProp>
         </IncludeController>
         <hashTree/>
       </hashTree>
@@ -183,7 +213,7 @@
         </DebugSampler>
         <hashTree/>
         <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="Include Teardown" enabled="true">
-          <stringProp name="IncludeController.includepath">/home/acr22938/workspace/tests/jmeter/db/jmeter-tests/fragments/teardown_ispyb_test_items.jmx</stringProp>
+          <stringProp name="IncludeController.includepath">fragments/teardown_ispyb_test_items.jmx</stringProp>
         </IncludeController>
         <hashTree/>
       </hashTree>
