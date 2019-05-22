@@ -1,2 +1,2 @@
-LabName,Person,Proposal,CourierCompany,CourierAccount
-Acme-1;jbloggs;mx1005;Speedy Shippers;123456789
+CardName,LabName,Person,Proposal,CourierCompany,CourierAccount
+Acme-1;Acme-1;jbloggs;mx1005;Speedy Shippers;123456789

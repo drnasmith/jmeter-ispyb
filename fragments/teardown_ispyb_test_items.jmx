@@ -12,7 +12,9 @@
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
-      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="false"/>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Remove Test Database Items" enabled="false">
+        <stringProp name="TestPlan.comments">Removing proposals removes associated sessions, shipments etc.</stringProp>
+      </TestFragmentController>
       <hashTree>
         <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
           <collectionProp name="Arguments.arguments">
@@ -45,11 +47,11 @@
           </collectionProp>
         </Arguments>
         <hashTree/>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Remove LabContacts" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Remove Proposals" enabled="true"/>
         <hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Labcontacts" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Proposals" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters">${csv.filename.labcontacts}</stringProp>
+            <stringProp name="parameters">${csv.filename.proposals}</stringProp>
             <stringProp name="filename">${csv.scripts.numrows}</stringProp>
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="script"></stringProp>
@@ -81,9 +83,9 @@ log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&qu
           </LoopController>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">${csv.filename.labcontacts}</stringProp>
+              <stringProp name="filename">${csv.filename.proposals}</stringProp>
               <stringProp name="fileEncoding">UTF-8</stringProp>
-              <stringProp name="variableNames">labName,person,proposal,courierCompany,courierAccount</stringProp>
+              <stringProp name="variableNames">propCode,propNumber,propTitle</stringProp>
               <boolProp name="ignoreFirstLine">true</boolProp>
               <stringProp name="delimiter">;</stringProp>
               <boolProp name="quotedData">false</boolProp>
@@ -92,11 +94,11 @@ log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&qu
               <stringProp name="shareMode">shareMode.group</stringProp>
             </CSVDataSet>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Remove Lab Contact ${labName}" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Remove Proposal ${propCode}${propNumber}" enabled="true">
               <stringProp name="dataSource">${db.pool}</stringProp>
-              <stringProp name="query">DELETE FROM LabContact WHERE cardName = ?</stringProp>
-              <stringProp name="queryArguments">&quot;${labName}&quot;</stringProp>
-              <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+              <stringProp name="query">DELETE FROM Proposal WHERE proposalCode = ? AND proposalNumber = ?</stringProp>
+              <stringProp name="queryArguments">&quot;${propCode}&quot;,${propNumber}</stringProp>
+              <stringProp name="queryArgumentsTypes">VARCHAR,INTEGER</stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="queryType">Prepared Update Statement</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
@@ -228,11 +230,13 @@ log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&qu
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Remove Proposals" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Remove LabContacts" enabled="false">
+          <stringProp name="TestPlan.comments">Removing Proposals removes LCs</stringProp>
+        </GenericController>
         <hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Proposals" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Labcontacts" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters">${csv.filename.proposals}</stringProp>
+            <stringProp name="parameters">${csv.filename.labcontacts}</stringProp>
             <stringProp name="filename">${csv.scripts.numrows}</stringProp>
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="script"></stringProp>
@@ -264,9 +268,9 @@ log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&qu
           </LoopController>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">${csv.filename.proposals}</stringProp>
+              <stringProp name="filename">${csv.filename.labcontacts}</stringProp>
               <stringProp name="fileEncoding">UTF-8</stringProp>
-              <stringProp name="variableNames">propCode,propNumber,propTitle</stringProp>
+              <stringProp name="variableNames">labName,person,proposal,courierCompany,courierAccount</stringProp>
               <boolProp name="ignoreFirstLine">true</boolProp>
               <stringProp name="delimiter">;</stringProp>
               <boolProp name="quotedData">false</boolProp>
@@ -275,11 +279,11 @@ log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&qu
               <stringProp name="shareMode">shareMode.group</stringProp>
             </CSVDataSet>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Remove Proposal ${propCode}${propNumber}" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Remove Lab Contact ${labName}" enabled="true">
               <stringProp name="dataSource">${db.pool}</stringProp>
-              <stringProp name="query">DELETE FROM Proposal WHERE proposalCode = ? AND proposalNumber = ?</stringProp>
-              <stringProp name="queryArguments">&quot;${propCode}&quot;,${propNumber}</stringProp>
-              <stringProp name="queryArgumentsTypes">VARCHAR,INTEGER</stringProp>
+              <stringProp name="query">DELETE FROM LabContact WHERE cardName = ?</stringProp>
+              <stringProp name="queryArguments">&quot;${labName}&quot;</stringProp>
+              <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
               <stringProp name="queryTimeout"></stringProp>
               <stringProp name="queryType">Prepared Update Statement</stringProp>
               <stringProp name="resultSetHandler">Store as String</stringProp>
@@ -289,7 +293,9 @@ log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&qu
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Remove Registered Dewars" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Remove Registered Dewars" enabled="false">
+          <stringProp name="TestPlan.comments">Removing Proposals removes Dewars</stringProp>
+        </GenericController>
         <hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Dewars" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
