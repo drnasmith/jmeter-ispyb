@@ -111,64 +111,9 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Test Shipment" enabled="true"/>
-        <hashTree>
-          <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="user" elementType="Argument">
-                <stringProp name="Argument.name">user</stringProp>
-                <stringProp name="Argument.value">acr22938</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-              <elementProp name="prop" elementType="Argument">
-                <stringProp name="Argument.name">prop</stringProp>
-                <stringProp name="Argument.value">mx1005</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-            </collectionProp>
-          </Arguments>
-          <hashTree/>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Add User ${personId_1} to session ${sessionId_1}" enabled="true">
-            <stringProp name="dataSource">${db.pool}</stringProp>
-            <stringProp name="queryType">Prepared Update Statement</stringProp>
-            <stringProp name="query">INSERT INTO Session_has_Person (sessionId, personId, role, remote) VALUES (?,?,&apos;Team Member&apos;, 0)</stringProp>
-            <stringProp name="queryArguments">${sessionId_1},${personId_1}</stringProp>
-            <stringProp name="queryArgumentsTypes">INTEGER,INTEGER</stringProp>
-            <stringProp name="variableNames"></stringProp>
-            <stringProp name="resultVariable"></stringProp>
-            <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="resultSetHandler">Store as String</stringProp>
-          </JDBCSampler>
-          <hashTree>
-            <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="Get PersonID" enabled="true">
-              <stringProp name="dataSource">${db.pool}</stringProp>
-              <stringProp name="queryType">Prepared Select Statement</stringProp>
-              <stringProp name="query">SELECT personId FROM Person WHERE login = ?</stringProp>
-              <stringProp name="queryArguments">${user}</stringProp>
-              <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
-              <stringProp name="variableNames">personId</stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCPreProcessor>
-            <hashTree/>
-            <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="Get SessionID" enabled="true">
-              <stringProp name="dataSource">${db.pool}</stringProp>
-              <stringProp name="queryType">Prepared Select Statement</stringProp>
-              <stringProp name="query">SELECT sessionId FROM BLSession AS s INNER JOIN Proposal AS p ON p.proposalId = s.proposalId WHERE CONCAT(p.proposalCode, p.proposalNumber) = ? AND s.visit_number = ?</stringProp>
-              <stringProp name="queryArguments">${prop},1</stringProp>
-              <stringProp name="queryArgumentsTypes">VARCHAR,INTEGER</stringProp>
-              <stringProp name="variableNames">sessionId</stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-            </JDBCPreProcessor>
-            <hashTree/>
-          </hashTree>
-        </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="View Database" enabled="true"/>
         <hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="List Proposals" enabled="true">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Proposals" enabled="true">
             <stringProp name="dataSource">${db.pool}</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="query">SELECT proposalId, proposalCode, proposalNumber, title FROM Proposal</stringProp>
