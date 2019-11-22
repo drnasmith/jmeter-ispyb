@@ -17,8 +17,10 @@ db.port = <3306>
 
 ## Using the csv files
 Each csv file refers to a table.
+First line is a comment indicated valid items.
+The delimiter is usually ';' because then we can handle addresses with ',' in the name.
 
-Links/Foreign Keys are worked out based on names. 
+Links/Foreign Keys are worked out based on names.
 For example sessions are mapped to proposals by the proposalCode+proposalNumber. 
 Dewars are mapped to shipments based on the shippingName etc.
 
