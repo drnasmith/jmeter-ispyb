@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.2">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="SynchWeb Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="synchweb.host" elementType="Argument">
+            <stringProp name="Argument.name">synchweb.host</stringProp>
+            <stringProp name="Argument.value">${__P(synchweb.host,localhost)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="synchweb.user" elementType="Argument">
+            <stringProp name="Argument.name">synchweb.user</stringProp>
+            <stringProp name="Argument.value">${__P(synchweb.user,boaty)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="synchweb.password" elementType="Argument">
+            <stringProp name="Argument.name">synchweb.password</stringProp>
+            <stringProp name="Argument.value">${__P(synchweb.password,boaty)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+        <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments"/>
+        </elementProp>
+        <stringProp name="HTTPSampler.domain">${synchweb.host}</stringProp>
+        <stringProp name="HTTPSampler.port"></stringProp>
+        <stringProp name="HTTPSampler.protocol">https</stringProp>
+        <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+        <stringProp name="HTTPSampler.path"></stringProp>
+        <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
+        <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+        <stringProp name="HTTPSampler.response_timeout"></stringProp>
+      </ConfigTestElement>
+      <hashTree/>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="Database Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="db.pool" elementType="Argument">
+            <stringProp name="Argument.name">db.pool</stringProp>
+            <stringProp name="Argument.value">${__P(db.pool,ispyb)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="db.name" elementType="Argument">
+            <stringProp name="Argument.name">db.name</stringProp>
+            <stringProp name="Argument.value">${__P(db.name, ispyb)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="db.host" elementType="Argument">
+            <stringProp name="Argument.name">db.host</stringProp>
+            <stringProp name="Argument.value">${__P(db.host,localhost)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="db.port" elementType="Argument">
+            <stringProp name="Argument.name">db.port</stringProp>
+            <stringProp name="Argument.value">${__P(db.port,3306)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="db.password" elementType="Argument">
+            <stringProp name="Argument.name">db.password</stringProp>
+            <stringProp name="Argument.value">${__P(db.password,ispyb)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="db.user" elementType="Argument">
+            <stringProp name="Argument.name">db.user</stringProp>
+            <stringProp name="Argument.value">${__P(db.user,ispyb)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="Database Connection Configuration" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery"></stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="dataSource">${db.pool}</stringProp>
+        <stringProp name="dbUrl">jdbc:mysql://${db.host}:${db.port}/${db.name}</stringProp>
+        <stringProp name="driver">com.mysql.jdbc.Driver</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">${db.password}</stringProp>
+        <stringProp name="poolMax">0</stringProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">${db.user}</stringProp>
+        <boolProp name="preinit">false</boolProp>
+        <stringProp name="initQuery"></stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1370729701000</longProp>
+        <longProp name="ThreadGroup.end_time">1370729701000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Simple Controller" enabled="false"/>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Authenticate" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="login" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${synchweb.user}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">login</stringProp>
+                </elementProp>
+                <elementProp name="password" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${synchweb.password}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">password</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/authenticate</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">token</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.jwt</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Get Contacts" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="prop" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">mx1005</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">prop</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/contact</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Bearer ${token}</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="JDBC  Get LabContacts and Laboratory" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="queryType">Prepared Select Statement</stringProp>
+            <stringProp name="query">SELECT c.labContactId, c.cardName, pe.givenName, pe.familyName, pe.phoneNumber, l.name as labname, l.address, l.city, l.country, c.courierAccount,  c.billingReference, c.defaultCourrierCompany, c.dewarAvgCustomsValue, c.dewarAvgTransportValue, pe.emailAddress, l.postcode, l.country 
+FROM LabContact c 
+INNER JOIN Person pe ON c.personId = pe.personId 
+INNER JOIN Laboratory l ON l.laboratoryId = pe.laboratoryId 
+INNER JOIN Proposal p ON p.proposalId = c.proposalId WHERE c.proposalId = ?</stringProp>
+            <stringProp name="queryArguments">${proposalID_1}</stringProp>
+            <stringProp name="queryArgumentsTypes">INTEGER</stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="JDBC PreProcessor" enabled="true">
+              <stringProp name="dataSource">${db.pool}</stringProp>
+              <stringProp name="queryType">Prepared Select Statement</stringProp>
+              <stringProp name="query">SELECT proposalId FROM Proposal WHERE CONCAT(proposalCode, proposalNumber) = ?</stringProp>
+              <stringProp name="queryArguments">mx1005</stringProp>
+              <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+              <stringProp name="variableNames">proposalID</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+            </JDBCPreProcessor>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="JDBC Get LabContacts" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="queryType">Prepared Select Statement</stringProp>
+            <stringProp name="query">SELECT c.labContactId, c.cardName, pe.givenName, pe.familyName, pe.phoneNumber, c.courierAccount,  c.billingReference, c.defaultCourrierCompany, c.dewarAvgCustomsValue, c.dewarAvgTransportValue, pe.emailAddress
+FROM LabContact c 
+INNER JOIN Person pe ON c.personId = pe.personId
+INNER JOIN Proposal p ON p.proposalId = c.proposalId WHERE c.proposalId = ?</stringProp>
+            <stringProp name="queryArguments">${proposalID_1}</stringProp>
+            <stringProp name="queryArgumentsTypes">INTEGER</stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="JDBC PreProcessor" enabled="true">
+              <stringProp name="dataSource">${db.pool}</stringProp>
+              <stringProp name="queryType">Prepared Select Statement</stringProp>
+              <stringProp name="query">SELECT proposalId FROM Proposal WHERE CONCAT(proposalCode, proposalNumber) = ?</stringProp>
+              <stringProp name="queryArguments">mx1005</stringProp>
+              <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+              <stringProp name="variableNames">proposalID</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+            </JDBCPreProcessor>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="JDBC Show Registered Dewars" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="queryType">Prepared Select Statement</stringProp>
+            <stringProp name="query">SELECT r.facilityCode, lc.cardName, pe.givenName, pe.familyName, l.name, l.address
+FROM DewarRegistry r 
+INNER JOIN Proposal p ON p.proposalId = r.proposalId 
+INNER JOIN LabContact lc ON r.labcontactId = lc.labcontactId
+INNER JOIN Person pe ON pe.personId = lc.personId
+INNER JOIN Laboratory l ON l.laboratoryId = pe.laboratoryId 
+LEFT OUTER JOIN Dewar d ON d.facilityCode = r.facilityCode
+LEFT OUTER JOIN Shipping s ON d.shippingId = s.shippingId WHERE CONCAT(p.proposalCode, p.proposalNumber) = ? GROUP BY CONCAT(p.proposalCode, p.proposalNumber)</stringProp>
+            <stringProp name="queryArguments">mx1005</stringProp>
+            <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="JDBC PreProcessor" enabled="true">
+              <stringProp name="dataSource">${db.pool}</stringProp>
+              <stringProp name="queryType">Prepared Select Statement</stringProp>
+              <stringProp name="query">SELECT proposalId FROM Proposal WHERE CONCAT(proposalCode, proposalNumber) = ?</stringProp>
+              <stringProp name="queryArguments">mx1005</stringProp>
+              <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+              <stringProp name="variableNames">proposalID</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+            </JDBCPreProcessor>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Get Reg Dewars" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="prop" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">mx1005</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">prop</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/shipment/dewars/registry</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Bearer ${token}</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="View Database" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Proposals" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT p.proposalId, p.proposalCode, p.proposalNumber, p.title, p.personId, pe.login 
+FROM Proposal p
+INNER JOIN Person pe ON p.personId = pe.personId</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Sessions" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="query">SELECT s.sessionId, s.proposalId, CONCAT(p.proposalCode, p.proposalNumber, &apos;-&apos;, s.visit_number) as visit, s.beamLineName, s.externalId, s.startDate, s.endDate
+FROM BLSession s
+INNER JOIN Proposal p ON p.proposalId = s.proposalId</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Session Types" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="query">SELECT st.sessionTypeId, st.sessionId, st.typeName, CONCAT(p.proposalCode, p.proposalNumber, &apos;-&apos;, s.visit_number) as visit
+FROM SessionType st
+INNER JOIN BLSession s ON s.sessionId = st.sessionId
+INNER JOIN Proposal p ON p.proposalId = s.proposalId
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Persons" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT login, givenName, familyName, emailAddress FROM Person</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Session has Person" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="query">SELECT p.login, s.sessionId from Session_has_Person as s INNER JOIN Person AS p ON s.personId = p.personId</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Shipments" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="query">SELECT shippingId, proposalId, sendingLabContactId AS sender, returnLabContactId AS returnTo, shippingStatus, shippingName FROM Shipping</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Dewars" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="query">SELECT dewarId, shippingId, barCode FROM Dewar</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Reg Dewars" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="query">SELECT * FROM DewarRegistry</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Containers" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="query">SELECT containerId, dewarId, sessionId, ownerId, barcode, containerType, containerStatus, beamlineLocation FROM Container</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Lab Contacts" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="query">SELECT * FROM LabContact</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Labs" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="query">SELECT * FROM Laboratory</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Proteins" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="query">SELECT proteinId, name, acronym, externalId FROM Protein</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Crystals" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="query">SELECT crystalId, name FROM Crystal</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="AutoCollect Sessions" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">false</boolProp>
+        </TransactionController>
+        <hashTree>
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="TEST START" enabled="true">
+            <boolProp name="displayJMeterProperties">false</boolProp>
+            <boolProp name="displayJMeterVariables">true</boolProp>
+            <boolProp name="displaySystemProperties">false</boolProp>
+          </DebugSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Active Sessions" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="queryType">Prepared Select Statement</stringProp>
+            <stringProp name="query">SELECT s.sessionId, CONCAT(p.proposalCode, p.proposalNumber, &apos;-&apos;, s.visit_number) AS prop, s.beamLineName, st.typeName FROM BLSession s 
+INNER JOIN Proposal p ON s.proposalId = p.proposalId 
+LEFT OUTER JOIN SessionType st ON st.sessionId = s.sessionId 
+WHERE s.beamLineName = ?
+AND st.typeName = ?
+AND CURRENT_TIMESTAMP between s.startDate AND s.endDate 
+ORDER BY startDate DESC</stringProp>
+            <stringProp name="queryArguments">i03,Auto Collect</stringProp>
+            <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR</stringProp>
+            <stringProp name="variableNames">session_id, prop, bl,type</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Add Owner to Container" enabled="false">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="queryType">Prepared Update Statement</stringProp>
+            <stringProp name="query">UPDATE Container SET ownerId = ? WHERE barcode = ?</stringProp>
+            <stringProp name="queryArguments">${personId_1},container-mx1005-0001</stringProp>
+            <stringProp name="queryArgumentsTypes">INTEGER, VARCHAR</stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="Get Person Id" enabled="true">
+              <stringProp name="dataSource">${db.pool}</stringProp>
+              <stringProp name="queryType">Prepared Select Statement</stringProp>
+              <stringProp name="query">SELECT pe.personId FROM Person pe 
+WHERE login = ?
+LIMIT 1</stringProp>
+              <stringProp name="queryArguments">jbloggs</stringProp>
+              <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+              <stringProp name="variableNames">personId</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCPreProcessor>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Add Container to Session" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="queryType">Prepared Update Statement</stringProp>
+            <stringProp name="query">UPDATE Container SET sessionId = ? WHERE barcode = ?</stringProp>
+            <stringProp name="queryArguments">${containerSessionId_1},container-mx1005-0001</stringProp>
+            <stringProp name="queryArgumentsTypes">INTEGER, VARCHAR</stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="Get Session Id" enabled="true">
+              <stringProp name="dataSource">${db.pool}</stringProp>
+              <stringProp name="queryType">Prepared Select Statement</stringProp>
+              <stringProp name="query">SELECT s.sessionId FROM BLSession s 
+INNER JOIN Proposal p ON p.proposalId = s.proposalId
+WHERE CONCAT(p.proposalCode, p.proposalNumber, &apos;-&apos;, s.visit_number) = ?
+ORDER BY s.sessionId DESC
+LIMIT 1</stringProp>
+              <stringProp name="queryArguments">mx1005-2</stringProp>
+              <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+              <stringProp name="variableNames">containerSessionId</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCPreProcessor>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="List Containers" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT containerId, barcode, sessionId, ownerId FROM Container</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="Get Session Id" enabled="true">
+              <stringProp name="dataSource">${db.pool}</stringProp>
+              <stringProp name="queryType">Prepared Select Statement</stringProp>
+              <stringProp name="query">SELECT s.sessionId FROM BLSession s 
+INNER JOIN Proposal p ON p.proposalId = s.proposalId
+WHERE CONCAT(p.proposalCode, p.proposalNumber, &apos;-&apos;, s.visit_number) = ?
+ORDER BY s.sessionId DESC
+LIMIT 1</stringProp>
+              <stringProp name="queryArguments">mx1005-2</stringProp>
+              <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+              <stringProp name="variableNames">containerSessionId</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCPreProcessor>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Containers From session - ${containerSessionId_1}" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="queryType">Prepared Select Statement</stringProp>
+            <stringProp name="query">SELECT c.containerId, c.barcode FROM Container c 
+WHERE c.sessionId = ?
+ORDER BY c.containerId DESC</stringProp>
+            <stringProp name="queryArguments">${containerSessionId_1}</stringProp>
+            <stringProp name="queryArgumentsTypes">INTEGER</stringProp>
+            <stringProp name="variableNames">containerId, barcode</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Samples and Owners From active containers - ${containerSessionId_1}" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="queryType">Prepared Select Statement</stringProp>
+            <stringProp name="query">SELECT c.containerId, c.barcode, c.ownerId, bls.crystalId, pr.name, cr.name AS crystalName FROM Container c 
+INNER JOIN BLSample bls ON bls.containerId = c.containerId
+INNER JOIN Crystal cr ON cr.crystalId = bls.crystalId
+INNER JOIN Protein pr ON pr.proteinId = cr.proteinId
+WHERE c.sessionId = ?
+ORDER BY c.containerId DESC</stringProp>
+            <stringProp name="queryArguments">${containerSessionId_1}</stringProp>
+            <stringProp name="queryArgumentsTypes">INTEGER</stringProp>
+            <stringProp name="variableNames">containerId, barcode, ownerId, crystalId, proteinName, crystalName</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Unique Samples containers - ${containerSessionId_1}" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="queryType">Prepared Select Statement</stringProp>
+            <stringProp name="query">SELECT DISTINCT(pr.name) FROM Protein pr 
+INNER JOIN Crystal cr ON cr.proteinId = pr.proteinId
+INNER JOIN BLSample bls ON cr.crystalId = bls.crystalId
+INNER JOIN Container c ON bls.containerId = c.containerId
+WHERE c.sessionId = ?
+ORDER BY c.containerId DESC</stringProp>
+            <stringProp name="queryArguments">${containerSessionId_1}</stringProp>
+            <stringProp name="queryArgumentsTypes">INTEGER</stringProp>
+            <stringProp name="variableNames">proteinName</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Unique Owners from containers - ${containerSessionId_1}" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="queryType">Prepared Select Statement</stringProp>
+            <stringProp name="query">SELECT DISTINCT(pe.login) FROM Person pe 
+INNER JOIN Container c ON pe.personId = c.ownerId
+WHERE c.sessionId = ?
+ORDER BY c.containerId DESC</stringProp>
+            <stringProp name="queryArguments">${containerSessionId_1}</stringProp>
+            <stringProp name="queryArgumentsTypes">INTEGER</stringProp>
+            <stringProp name="variableNames">personName</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>false</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>false</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>true</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <hostname>true</hostname>
+            <threadCounts>true</threadCounts>
+            <sampleCount>true</sampleCount>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="false">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </SetupThreadGroup>
+      <hashTree>
+        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="SETUP" enabled="true">
+          <boolProp name="displayJMeterProperties">false</boolProp>
+          <boolProp name="displayJMeterVariables">true</boolProp>
+          <boolProp name="displaySystemProperties">false</boolProp>
+        </DebugSampler>
+        <hashTree/>
+        <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="Include Setup" enabled="true">
+          <stringProp name="IncludeController.includepath">fragments/setup_ispyb_test_items.jmx</stringProp>
+        </IncludeController>
+        <hashTree/>
+      </hashTree>
+      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="tearDown Thread Group" enabled="false">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </PostThreadGroup>
+      <hashTree>
+        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="TEARDOWN" enabled="true">
+          <boolProp name="displayJMeterProperties">false</boolProp>
+          <boolProp name="displayJMeterVariables">true</boolProp>
+          <boolProp name="displaySystemProperties">false</boolProp>
+        </DebugSampler>
+        <hashTree/>
+        <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="Include Teardown" enabled="true">
+          <stringProp name="IncludeController.includepath">fragments/teardown_ispyb_test_items.jmx</stringProp>
+        </IncludeController>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
