@@ -739,7 +739,7 @@ log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&qu
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Shipments From CSV" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
             <stringProp name="parameters">${csv.filename.shipments}</stringProp>
-            <stringProp name="filename">D:/workspace/jmeter-ispyb/scripts/get_num_rows_csv.sh</stringProp>
+            <stringProp name="filename">${csv.scripts.numrows}</stringProp>
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="script"></stringProp>
           </JSR223Sampler>
@@ -830,7 +830,7 @@ log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&qu
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Dewars From CSV" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
             <stringProp name="parameters">${csv.filename.dewars}</stringProp>
-            <stringProp name="filename">D:/workspace/jmeter-ispyb/scripts/get_num_rows_csv.sh</stringProp>
+            <stringProp name="filename">${csv.scripts.numrows}</stringProp>
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="script"></stringProp>
           </JSR223Sampler>
@@ -908,7 +908,7 @@ log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&qu
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Containers From CSV" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
             <stringProp name="parameters">${csv.filename.containers}</stringProp>
-            <stringProp name="filename">D:/workspace/jmeter-ispyb/scripts/get_num_rows_csv.sh</stringProp>
+            <stringProp name="filename">${csv.scripts.numrows}</stringProp>
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="script"></stringProp>
           </JSR223Sampler>
@@ -986,7 +986,7 @@ log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&qu
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Shipments From CSV" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
             <stringProp name="parameters">${csv.filename.proteins}</stringProp>
-            <stringProp name="filename">D:/workspace/jmeter-ispyb/scripts/get_num_rows_csv.sh</stringProp>
+            <stringProp name="filename">${csv.scripts.numrows}</stringProp>
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="script"></stringProp>
           </JSR223Sampler>
@@ -1064,7 +1064,7 @@ log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&qu
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Crystals From CSV" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
             <stringProp name="parameters">${csv.filename.crystals}</stringProp>
-            <stringProp name="filename">D:/workspace/jmeter-ispyb/scripts/get_num_rows_csv.sh</stringProp>
+            <stringProp name="filename">${csv.scripts.numrows}</stringProp>
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="script"></stringProp>
           </JSR223Sampler>
@@ -1142,7 +1142,7 @@ log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&qu
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Samples From CSV" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
             <stringProp name="parameters">${csv.filename.samples}</stringProp>
-            <stringProp name="filename">D:/workspace/jmeter-ispyb/scripts/get_num_rows_csv.sh</stringProp>
+            <stringProp name="filename">${csv.scripts.numrows}</stringProp>
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="script"></stringProp>
           </JSR223Sampler>
