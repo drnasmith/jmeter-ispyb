@@ -1,6 +1,6 @@
 # jmeter-ispyb
-Apache JMeter Tests for ISPyB/SynchWeb
-Requires JMeter > 5.0
+Apache JMeter Tests for ISPyB/SynchWeb (requires JMeter > 5.0) https://jmeter.apache.org/
+
 See jmeter docs for where to get mysql jdbc driver (MySQL Connector J) and install description
 The main use case for these scripts are to create known database configurations for testing SynchWeb (or related web apps).
 The template should be used as a starting point for creating your own scripts.
