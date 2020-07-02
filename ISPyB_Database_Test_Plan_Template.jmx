@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.2">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.2.1">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -37,7 +37,7 @@
         </elementProp>
         <stringProp name="HTTPSampler.domain">${synchweb.host}</stringProp>
         <stringProp name="HTTPSampler.port"></stringProp>
-        <stringProp name="HTTPSampler.protocol">https</stringProp>
+        <stringProp name="HTTPSampler.protocol">http</stringProp>
         <stringProp name="HTTPSampler.contentEncoding"></stringProp>
         <stringProp name="HTTPSampler.path"></stringProp>
         <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
@@ -49,32 +49,32 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="db.pool" elementType="Argument">
             <stringProp name="Argument.name">db.pool</stringProp>
-            <stringProp name="Argument.value">${__P(db.pool,ispyb)}</stringProp>
+            <stringProp name="Argument.value">${__P(ispyb.pool,ispyb)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="db.name" elementType="Argument">
             <stringProp name="Argument.name">db.name</stringProp>
-            <stringProp name="Argument.value">${__P(db.name, ispyb)}</stringProp>
+            <stringProp name="Argument.value">${__P(ispyb.name, ispyb)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="db.host" elementType="Argument">
             <stringProp name="Argument.name">db.host</stringProp>
-            <stringProp name="Argument.value">${__P(db.host,localhost)}</stringProp>
+            <stringProp name="Argument.value">${__P(ispyb.host,localhost)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="db.port" elementType="Argument">
             <stringProp name="Argument.name">db.port</stringProp>
-            <stringProp name="Argument.value">${__P(db.port,3306)}</stringProp>
+            <stringProp name="Argument.value">${__P(ispyb.port,3306)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="db.password" elementType="Argument">
             <stringProp name="Argument.name">db.password</stringProp>
-            <stringProp name="Argument.value">${__P(db.password,ispyb)}</stringProp>
+            <stringProp name="Argument.value">${__P(ispyb.password,ispyb)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="db.user" elementType="Argument">
             <stringProp name="Argument.name">db.user</stringProp>
-            <stringProp name="Argument.value">${__P(db.user,ispyb)}</stringProp>
+            <stringProp name="Argument.value">${__P(ispyb.user,ispyb)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -86,7 +86,7 @@
         <stringProp name="connectionAge">5000</stringProp>
         <stringProp name="dataSource">${db.pool}</stringProp>
         <stringProp name="dbUrl">jdbc:mysql://${db.host}:${db.port}/${db.name}</stringProp>
-        <stringProp name="driver">com.mysql.jdbc.Driver</stringProp>
+        <stringProp name="driver">org.mariadb.jdbc.Driver</stringProp>
         <boolProp name="keepAlive">true</boolProp>
         <stringProp name="password">${db.password}</stringProp>
         <stringProp name="poolMax">0</stringProp>
@@ -96,6 +96,7 @@
         <stringProp name="username">${db.user}</stringProp>
         <boolProp name="preinit">false</boolProp>
         <stringProp name="initQuery"></stringProp>
+        <stringProp name="connectionProperties"></stringProp>
       </JDBCDataSource>
       <hashTree/>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
@@ -384,6 +385,19 @@ LEFT OUTER JOIN Shipping s ON d.shippingId = s.shippingId WHERE CONCAT(p.proposa
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Session has Person" enabled="true">
             <stringProp name="dataSource">${db.pool}</stringProp>
             <stringProp name="query">SELECT p.login, s.sessionId from Session_has_Person as s INNER JOIN Person AS p ON s.personId = p.personId</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultSetMaxRows"></stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Get Usergroup has Person" enabled="true">
+            <stringProp name="dataSource">${db.pool}</stringProp>
+            <stringProp name="query">SELECT p.login, u.name from UserGroup_has_Person as ugp INNER JOIN Person AS p ON ugp.personId = p.personId INNER JOIN UserGroup u ON ugp.userGroupId = u.userGroupId</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>

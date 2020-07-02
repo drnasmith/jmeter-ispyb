@@ -1,3 +1,5 @@
 # Add samples: SampleName, ContainerBarCode; CrystalName; Container Location
 Sample1;container-mx1005-0001;TestCrystal-1;1
 Sample2;container-mx1005-0001;TestCrystal-1;2
+Sample1;container-mx1005-0002;TestCrystal-2;1
+Sample2;container-mx1005-0002;TestCrystal-3;2

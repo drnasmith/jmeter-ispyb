@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.2">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.2.1">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Create Test Database Items" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -90,6 +90,11 @@
             <elementProp name="csv.filename.samples" elementType="Argument">
               <stringProp name="Argument.name">csv.filename.samples</stringProp>
               <stringProp name="Argument.value">files/samples.csv</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="csv.filename.usergroup_has_person" elementType="Argument">
+              <stringProp name="Argument.name">csv.filename.usergroup_has_person</stringProp>
+              <stringProp name="Argument.value">files/usergroup_has_person.csv</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
@@ -455,6 +460,95 @@ log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&qu
                 <stringProp name="queryArguments">${prop},${visit_number}</stringProp>
                 <stringProp name="queryArgumentsTypes">VARCHAR,INTEGER</stringProp>
                 <stringProp name="variableNames">sessionId</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+              </JDBCPreProcessor>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Add Persons to UserGroup" enabled="true"/>
+        <hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Rows" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters">${csv.filename.usergroup_has_person}</stringProp>
+            <stringProp name="filename">${csv.scripts.numrows}</stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script"></stringProp>
+          </JSR223Sampler>
+          <hashTree>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">csv.numRows</stringProp>
+              <stringProp name="RegexExtractor.regex">.*</stringProp>
+              <stringProp name="RegexExtractor.template">$0$</stringProp>
+              <stringProp name="RegexExtractor.default"></stringProp>
+              <stringProp name="RegexExtractor.match_number"></stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Ignore result in listener" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">// Tell Jmeter to ignore this result (does not show in list of samplers)
+prev.setIgnore();
+log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&quot;) + &quot; samples&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${csv.numRows}</stringProp>
+          </LoopController>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+              <stringProp name="filename">${csv.filename.usergroup_has_person}</stringProp>
+              <stringProp name="fileEncoding">UTF-8</stringProp>
+              <stringProp name="variableNames">login,usergroup</stringProp>
+              <boolProp name="ignoreFirstLine">true</boolProp>
+              <stringProp name="delimiter">;</stringProp>
+              <boolProp name="quotedData">false</boolProp>
+              <boolProp name="recycle">false</boolProp>
+              <boolProp name="stopThread">false</boolProp>
+              <stringProp name="shareMode">shareMode.group</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Add User ${personId_1} to group ${usergroupId_1}" enabled="true">
+              <stringProp name="dataSource">${db.pool}</stringProp>
+              <stringProp name="queryType">Prepared Update Statement</stringProp>
+              <stringProp name="query">INSERT INTO UserGroup_has_Person (userGroupId, personId) VALUES (?,?)</stringProp>
+              <stringProp name="queryArguments">${usergroupId_1},${personId_1}</stringProp>
+              <stringProp name="queryArgumentsTypes">INTEGER,INTEGER</stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="Get PersonID" enabled="true">
+                <stringProp name="dataSource">${db.pool}</stringProp>
+                <stringProp name="queryType">Prepared Select Statement</stringProp>
+                <stringProp name="query">SELECT personId FROM Person WHERE login = ?</stringProp>
+                <stringProp name="queryArguments">${login}</stringProp>
+                <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+                <stringProp name="variableNames">personId</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+              </JDBCPreProcessor>
+              <hashTree/>
+              <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="Get UserGroupID" enabled="true">
+                <stringProp name="dataSource">${db.pool}</stringProp>
+                <stringProp name="queryType">Prepared Select Statement</stringProp>
+                <stringProp name="query">SELECT userGroupId FROM UserGroup WHERE name = ?</stringProp>
+                <stringProp name="queryArguments">${usergroup}</stringProp>
+                <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+                <stringProp name="variableNames">usergroupId</stringProp>
                 <stringProp name="resultVariable"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="resultSetHandler">Store as String</stringProp>
