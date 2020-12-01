@@ -8,12 +8,14 @@ It shows how to import the setup/teardown scripts so the database should be left
 
 ## Setup
 Provide a properties file with <examples> as follows
+```sh
 synchweb_user = <boaty>
 synchweb_password = <mcboatface>
 db.user = <ispyb_db_user>
 db.password = <ispyb_db_password>
 db.host = <localhost>
 db.port = <3306>
+```
 
 ## Using the csv files
 Each csv file refers to a table.
