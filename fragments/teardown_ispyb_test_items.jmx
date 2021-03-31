@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.2">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.2.1">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -12,7 +12,7 @@
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
-      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Remove Test Database Items" enabled="false">
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Remove Test Database Items" enabled="true">
         <stringProp name="TestPlan.comments">Removing proposals removes associated sessions, shipments etc.</stringProp>
       </TestFragmentController>
       <hashTree>
@@ -44,9 +44,239 @@
               <stringProp name="Argument.value">files/labcontacts.csv</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
+            <elementProp name="csv.filename.dcg" elementType="Argument">
+              <stringProp name="Argument.name">csv.filename.dcg</stringProp>
+              <stringProp name="Argument.value">files/datacollectiongroups.csv</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="csv.filename.dc" elementType="Argument">
+              <stringProp name="Argument.name">csv.filename.dc</stringProp>
+              <stringProp name="Argument.value">files/datacollections.csv</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="csv.filename.registered_dewars" elementType="Argument">
+              <stringProp name="Argument.name">csv.filename.registered_dewars</stringProp>
+              <stringProp name="Argument.value">files/registered_dewars.csv</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
           </collectionProp>
         </Arguments>
         <hashTree/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Remove Data Collections" enabled="true"/>
+        <hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num DCs" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters">${csv.filename.dc}</stringProp>
+            <stringProp name="filename">${csv.scripts.numrows}</stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script"></stringProp>
+          </JSR223Sampler>
+          <hashTree>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">csv.numRows</stringProp>
+              <stringProp name="RegexExtractor.regex">.*</stringProp>
+              <stringProp name="RegexExtractor.template">$0$</stringProp>
+              <stringProp name="RegexExtractor.default"></stringProp>
+              <stringProp name="RegexExtractor.match_number"></stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Ignore result in listener" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">// Tell Jmeter to ignore this result (does not show in list of samplers)
+prev.setIgnore();
+log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&quot;) + &quot; samples&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${csv.numRows}</stringProp>
+          </LoopController>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+              <stringProp name="filename">${csv.filename.dc}</stringProp>
+              <stringProp name="fileEncoding">UTF-8</stringProp>
+              <stringProp name="variableNames">comments,dcg_comments,session,sampleName,dataCollectionNumber</stringProp>
+              <boolProp name="ignoreFirstLine">true</boolProp>
+              <stringProp name="delimiter">;</stringProp>
+              <boolProp name="quotedData">false</boolProp>
+              <boolProp name="recycle">false</boolProp>
+              <boolProp name="stopThread">false</boolProp>
+              <stringProp name="shareMode">shareMode.group</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Remove DC ${comments} from group ${dcg_comments}" enabled="true">
+              <stringProp name="dataSource">${db.pool}</stringProp>
+              <stringProp name="query">DELETE FROM DataCollection WHERE comments = ?</stringProp>
+              <stringProp name="queryArguments">${comments}</stringProp>
+              <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Prepared Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Remove Data Collection Groups" enabled="true"/>
+        <hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num DCGs" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters">${csv.filename.dcg}</stringProp>
+            <stringProp name="filename">${csv.scripts.numrows}</stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script"></stringProp>
+          </JSR223Sampler>
+          <hashTree>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">csv.numRows</stringProp>
+              <stringProp name="RegexExtractor.regex">.*</stringProp>
+              <stringProp name="RegexExtractor.template">$0$</stringProp>
+              <stringProp name="RegexExtractor.default"></stringProp>
+              <stringProp name="RegexExtractor.match_number"></stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Ignore result in listener" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">// Tell Jmeter to ignore this result (does not show in list of samplers)
+prev.setIgnore();
+log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&quot;) + &quot; samples&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${csv.numRows}</stringProp>
+          </LoopController>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+              <stringProp name="filename">${csv.filename.dcg}</stringProp>
+              <stringProp name="fileEncoding">UTF-8</stringProp>
+              <stringProp name="variableNames">comments,sampleName,session,experimentType</stringProp>
+              <boolProp name="ignoreFirstLine">true</boolProp>
+              <stringProp name="delimiter">;</stringProp>
+              <boolProp name="quotedData">false</boolProp>
+              <boolProp name="recycle">false</boolProp>
+              <boolProp name="stopThread">false</boolProp>
+              <stringProp name="shareMode">shareMode.group</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Remove DCG ${comments}" enabled="true">
+              <stringProp name="dataSource">${db.pool}</stringProp>
+              <stringProp name="query">DELETE FROM DataCollectionGroup WHERE comments = ?</stringProp>
+              <stringProp name="queryArguments">${comments}</stringProp>
+              <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Prepared Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Remove Registered Dewars" enabled="true">
+          <stringProp name="TestPlan.comments">Removing Proposals removes Dewars</stringProp>
+        </GenericController>
+        <hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Dewars" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters">${csv.filename.registered_dewars}</stringProp>
+            <stringProp name="filename">${csv.scripts.numrows}</stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script"></stringProp>
+          </JSR223Sampler>
+          <hashTree>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">csv.numRows</stringProp>
+              <stringProp name="RegexExtractor.regex">.*</stringProp>
+              <stringProp name="RegexExtractor.template">$0$</stringProp>
+              <stringProp name="RegexExtractor.default"></stringProp>
+              <stringProp name="RegexExtractor.match_number"></stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Ignore result in listener" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">// Tell Jmeter to ignore this result (does not show in list of samplers)
+prev.setIgnore();
+log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&quot;) + &quot; samples&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+          </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${csv.numRows}</stringProp>
+          </LoopController>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+              <stringProp name="filename">${csv.filename.registered_dewars}</stringProp>
+              <stringProp name="fileEncoding">UTF-8</stringProp>
+              <stringProp name="variableNames">facilityCode,proposal,labContactName,purchaseDate</stringProp>
+              <boolProp name="ignoreFirstLine">true</boolProp>
+              <stringProp name="delimiter">;</stringProp>
+              <boolProp name="quotedData">false</boolProp>
+              <boolProp name="recycle">false</boolProp>
+              <boolProp name="stopThread">false</boolProp>
+              <stringProp name="shareMode">shareMode.group</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Remove Registered Dewar ${facilityCode}" enabled="true">
+              <stringProp name="dataSource">${db.pool}</stringProp>
+              <stringProp name="query">DELETE FROM DewarRegistry WHERE facilityCode = ?</stringProp>
+              <stringProp name="queryArguments">${facilityCode}</stringProp>
+              <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Prepared Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="Get ProposalId" enabled="true">
+                <stringProp name="dataSource">${db.pool}</stringProp>
+                <stringProp name="queryType">Prepared Select Statement</stringProp>
+                <stringProp name="query">SELECT proposalId FROM Proposal WHERE CONCAT(proposalCode, proposalNumber) = ?</stringProp>
+                <stringProp name="queryArguments">${proposal}</stringProp>
+                <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+                <stringProp name="variableNames">proposalId</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+              </JDBCPreProcessor>
+              <hashTree/>
+              <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="Get LabContactId" enabled="true">
+                <stringProp name="dataSource">${db.pool}</stringProp>
+                <stringProp name="queryType">Prepared Select Statement</stringProp>
+                <stringProp name="query">SELECT labContactId FROM LabContact WHERE cardName = ?</stringProp>
+                <stringProp name="queryArguments">${labContactName}</stringProp>
+                <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
+                <stringProp name="variableNames">labcontactId</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+              </JDBCPreProcessor>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+        </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Remove Proposals" enabled="true"/>
         <hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Proposals" enabled="true">
@@ -231,161 +461,6 @@ log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&qu
               <stringProp name="resultSetMaxRows"></stringProp>
             </JDBCSampler>
             <hashTree/>
-          </hashTree>
-        </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Remove LabContacts" enabled="false">
-          <stringProp name="TestPlan.comments">Removing Proposals removes LCs</stringProp>
-        </GenericController>
-        <hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Labcontacts" enabled="true">
-            <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters">${csv.filename.labcontacts}</stringProp>
-            <stringProp name="filename">${csv.scripts.numrows}</stringProp>
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="script"></stringProp>
-          </JSR223Sampler>
-          <hashTree>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
-              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-              <stringProp name="RegexExtractor.refname">csv.numRows</stringProp>
-              <stringProp name="RegexExtractor.regex">.*</stringProp>
-              <stringProp name="RegexExtractor.template">$0$</stringProp>
-              <stringProp name="RegexExtractor.default"></stringProp>
-              <stringProp name="RegexExtractor.match_number"></stringProp>
-            </RegexExtractor>
-            <hashTree/>
-            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Ignore result in listener" enabled="true">
-              <stringProp name="cacheKey">true</stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="script">// Tell Jmeter to ignore this result (does not show in list of samplers)
-prev.setIgnore();
-log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&quot;) + &quot; samples&quot;);</stringProp>
-              <stringProp name="scriptLanguage">groovy</stringProp>
-            </JSR223PostProcessor>
-            <hashTree/>
-          </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${csv.numRows}</stringProp>
-          </LoopController>
-          <hashTree>
-            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">${csv.filename.labcontacts}</stringProp>
-              <stringProp name="fileEncoding">UTF-8</stringProp>
-              <stringProp name="variableNames">labName,person,proposal,courierCompany,courierAccount</stringProp>
-              <boolProp name="ignoreFirstLine">true</boolProp>
-              <stringProp name="delimiter">;</stringProp>
-              <boolProp name="quotedData">false</boolProp>
-              <boolProp name="recycle">false</boolProp>
-              <boolProp name="stopThread">false</boolProp>
-              <stringProp name="shareMode">shareMode.group</stringProp>
-            </CSVDataSet>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Remove Lab Contact ${labName}" enabled="true">
-              <stringProp name="dataSource">${db.pool}</stringProp>
-              <stringProp name="query">DELETE FROM LabContact WHERE cardName = ?</stringProp>
-              <stringProp name="queryArguments">&quot;${labName}&quot;</stringProp>
-              <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Prepared Update Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-          </hashTree>
-        </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Remove Registered Dewars" enabled="false">
-          <stringProp name="TestPlan.comments">Removing Proposals removes Dewars</stringProp>
-        </GenericController>
-        <hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Get Num Dewars" enabled="true">
-            <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters">${csv.filename.registered_dewars}</stringProp>
-            <stringProp name="filename">${csv.scripts.numrows}</stringProp>
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="script"></stringProp>
-          </JSR223Sampler>
-          <hashTree>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
-              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-              <stringProp name="RegexExtractor.refname">csv.numRows</stringProp>
-              <stringProp name="RegexExtractor.regex">.*</stringProp>
-              <stringProp name="RegexExtractor.template">$0$</stringProp>
-              <stringProp name="RegexExtractor.default"></stringProp>
-              <stringProp name="RegexExtractor.match_number"></stringProp>
-            </RegexExtractor>
-            <hashTree/>
-            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Ignore result in listener" enabled="true">
-              <stringProp name="cacheKey">true</stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="script">// Tell Jmeter to ignore this result (does not show in list of samplers)
-prev.setIgnore();
-log.info(sampler.getName() + &quot; found &quot; + vars.get(&quot;csv.numRows&quot;) + &quot; samples&quot;);</stringProp>
-              <stringProp name="scriptLanguage">groovy</stringProp>
-            </JSR223PostProcessor>
-            <hashTree/>
-          </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${csv.numRows}</stringProp>
-          </LoopController>
-          <hashTree>
-            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">${csv.filename.registered_dewars}</stringProp>
-              <stringProp name="fileEncoding">UTF-8</stringProp>
-              <stringProp name="variableNames">facilityCode,proposal,labContactName,purchaseDate</stringProp>
-              <boolProp name="ignoreFirstLine">true</boolProp>
-              <stringProp name="delimiter">;</stringProp>
-              <boolProp name="quotedData">false</boolProp>
-              <boolProp name="recycle">false</boolProp>
-              <boolProp name="stopThread">false</boolProp>
-              <stringProp name="shareMode">shareMode.group</stringProp>
-            </CSVDataSet>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Remove Registered Dewar ${facilityCode}" enabled="true">
-              <stringProp name="dataSource">${db.pool}</stringProp>
-              <stringProp name="query">DELETE FROM DewarRegistry WHERE facilityCode = ?</stringProp>
-              <stringProp name="queryArguments">${facilityCode}</stringProp>
-              <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Prepared Update Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="Get ProposalId" enabled="true">
-                <stringProp name="dataSource">${db.pool}</stringProp>
-                <stringProp name="queryType">Prepared Select Statement</stringProp>
-                <stringProp name="query">SELECT proposalId FROM Proposal WHERE CONCAT(proposalCode, proposalNumber) = ?</stringProp>
-                <stringProp name="queryArguments">${proposal}</stringProp>
-                <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
-                <stringProp name="variableNames">proposalId</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultSetMaxRows"></stringProp>
-              </JDBCPreProcessor>
-              <hashTree/>
-              <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="Get LabContactId" enabled="true">
-                <stringProp name="dataSource">${db.pool}</stringProp>
-                <stringProp name="queryType">Prepared Select Statement</stringProp>
-                <stringProp name="query">SELECT labContactId FROM LabContact WHERE cardName = ?</stringProp>
-                <stringProp name="queryArguments">${labContactName}</stringProp>
-                <stringProp name="queryArgumentsTypes">VARCHAR</stringProp>
-                <stringProp name="variableNames">labcontactId</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultSetMaxRows"></stringProp>
-              </JDBCPreProcessor>
-              <hashTree/>
-            </hashTree>
           </hashTree>
         </hashTree>
       </hashTree>
