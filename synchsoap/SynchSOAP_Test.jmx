@@ -15,7 +15,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="host" elementType="Argument">
             <stringProp name="Argument.name">host</stringProp>
-            <stringProp name="Argument.value">192.168.33.49</stringProp>
+            <stringProp name="Argument.value">${__P(synchsoap.host,localhost)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">Host of Webservice</stringProp>
           </elementProp>
@@ -26,47 +26,48 @@
           </elementProp>
           <elementProp name="synchsoap_user" elementType="Argument">
             <stringProp name="Argument.name">synchsoap_user</stringProp>
-            <stringProp name="Argument.value">user</stringProp>
+            <stringProp name="Argument.value">${__P(synchsoap.user,synchsoap_user)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">SynchSOAP web service user</stringProp>
           </elementProp>
           <elementProp name="synchsoap_password" elementType="Argument">
             <stringProp name="Argument.name">synchsoap_password</stringProp>
-            <stringProp name="Argument.value">password</stringProp>
+            <stringProp name="Argument.value">${__P(synchsoap.password,synchsoap_password)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">SynchSOAP web service password</stringProp>
           </elementProp>
         </collectionProp>
+        <stringProp name="TestPlan.comments">Set these in properties file</stringProp>
       </Arguments>
       <hashTree/>
       <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="Request Variables" enabled="true">
         <collectionProp name="Arguments.arguments">
           <elementProp name="containerName" elementType="Argument">
             <stringProp name="Argument.name">containerName</stringProp>
-            <stringProp name="Argument.value">VMXiSim-001</stringProp>
+            <stringProp name="Argument.value">VMXiSim-016</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">barcode of the container</stringProp>
           </elementProp>
           <elementProp name="robotID" elementType="Argument">
             <stringProp name="Argument.name">robotID</stringProp>
             <stringProp name="Argument.value">3</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">Not used but required in SOAP requests</stringProp>
           </elementProp>
           <elementProp name="robotName" elementType="Argument">
             <stringProp name="Argument.name">robotName</stringProp>
             <stringProp name="Argument.value">RI1000-0000</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">Serial of the imager used to lookup the imagerId in ISPyB</stringProp>
           </elementProp>
-          <elementProp name="dateToImage" elementType="Argument">
-            <stringProp name="Argument.name">dateToImage</stringProp>
-            <stringProp name="Argument.value">2019-03-27 16:25:00</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="dateImaged" elementType="Argument">
-            <stringProp name="Argument.name">dateImaged</stringProp>
-            <stringProp name="Argument.value">2019-03-27 16:25:00</stringProp>
+          <elementProp name="inspectionId" elementType="Argument">
+            <stringProp name="Argument.name">inspectionId</stringProp>
+            <stringProp name="Argument.value">888</stringProp>
+            <stringProp name="Argument.desc">To set the completed state, the database container inspection id is needed.</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
+        <stringProp name="TestPlan.comments">Check these against test database</stringProp>
       </Arguments>
       <hashTree/>
       <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
@@ -112,7 +113,7 @@
           <boolProp name="AuthManager.controlledByThreadGroup">false</boolProp>
         </AuthManager>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="getPlateInfo" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="getPlateInfo for ${containerName}" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -215,7 +216,7 @@
           </HeaderManager>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="imagingPlate" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="imagingPlate - scheduled" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -231,8 +232,8 @@
          &lt;/robot&gt;&#xd;
          &lt;plateID&gt;${containerName}&lt;/plateID&gt;&#xd;
          &lt;scheduled&gt;true&lt;/scheduled&gt;&#xd;
-         &lt;dateToImage&gt;${dateToImage}&lt;/dateToImage&gt;&#xd;
-         &lt;dateImaged&gt;${dateImaged}&lt;/dateImaged&gt;&#xd;
+         &lt;dateToImage&gt;2021-05-30T16:15:00+00:00&lt;/dateToImage&gt;&#xd;
+         &lt;dateImaged&gt;2021-05-30T15:00:00+00:00&lt;/dateImaged&gt;&#xd;
       &lt;/wsp:imagingPlateElement&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
 &lt;/soapenv:Envelope&gt;&#xd;
@@ -254,6 +255,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="TestPlan.comments">Schedule an imaging?</stringProp>
         </HTTPSamplerProxy>
         <hashTree>
           <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
@@ -270,7 +272,63 @@
           </HeaderManager>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="imagedPlate" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="imagingPlate - manual" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:wsp=&quot;http://www.oppf.ox.ac.uk/WSPlate/&quot;&gt;&#xd;
+   &lt;soapenv:Header/&gt;&#xd;
+   &lt;soapenv:Body&gt;&#xd;
+      &lt;wsp:imagingPlateElement&gt;&#xd;
+         &lt;robot&gt;&#xd;
+            &lt;iD&gt;${robotID}&lt;/iD&gt;&#xd;
+            &lt;name&gt;${robotName}&lt;/name&gt;&#xd;
+         &lt;/robot&gt;&#xd;
+         &lt;plateID&gt;${containerName}&lt;/plateID&gt;&#xd;
+         &lt;scheduled&gt;false&lt;/scheduled&gt;&#xd;
+         &lt;dateToImage&gt;2021-06-30T18:25:00+00:00&lt;/dateToImage&gt;&#xd;
+         &lt;dateImaged&gt;2021-06-30T18:25:00+00:00&lt;/dateImaged&gt;&#xd;
+      &lt;/wsp:imagingPlateElement&gt;&#xd;
+   &lt;/soapenv:Body&gt;&#xd;
+&lt;/soapenv:Envelope&gt;&#xd;
+</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">${path}</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="TestPlan.comments">Create a manual container inspection entry in ISPyB</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">text/xml; charset=utf-8</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">SOAPAction</stringProp>
+                <stringProp name="Header.value">http://www.oppf.ox.ac.uk/WSPlate/</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="imagedPlate - inspectionId ${inspectionId}" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -285,7 +343,7 @@
             &lt;name&gt;${robotName}&lt;/name&gt;&#xd;
          &lt;/robot&gt;&#xd;
          &lt;plateID&gt;${containerName}&lt;/plateID&gt;&#xd;
-         &lt;imagingID&gt;?&lt;/imagingID&gt;&#xd;
+         &lt;imagingID&gt;${inspectionId}-20210417999&lt;/imagingID&gt;&#xd;
       &lt;/wsp:imagedPlateElement&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
 &lt;/soapenv:Envelope&gt;&#xd;
@@ -323,7 +381,7 @@
           </HeaderManager>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="skippedImaging " enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="skippedImaging " enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -338,7 +396,7 @@
             &lt;name&gt;${robotName}&lt;/name&gt;&#xd;
          &lt;/robot&gt;&#xd;
          &lt;plateID&gt;${containerName}&lt;/plateID&gt;&#xd;
-         &lt;dateToImage&gt;2019-03-27 16:25:00&lt;/dateToImage&gt;&#xd;
+         &lt;dateToImage&gt;2019-03-27T16:25:00+00:00&lt;/dateToImage&gt;&#xd;
       &lt;/wsp:skippedImagingElement&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
 &lt;/soapenv:Envelope&gt;</stringProp>
@@ -359,6 +417,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="TestPlan.comments">Set container inspection state to skipped. Needs a timestamp to skip the next inspection from that time</stringProp>
         </HTTPSamplerProxy>
         <hashTree>
           <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
@@ -375,7 +434,7 @@
           </HeaderManager>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="updatedPriority " enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="updatedPriority " enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -390,8 +449,8 @@
             &lt;name&gt;${robotName}&lt;/name&gt;&#xd;
          &lt;/robot&gt;&#xd;
          &lt;plateID&gt;${containerName}&lt;/plateID&gt;&#xd;
-         &lt;dateToImage&gt;2019-03-27 16:25:00&lt;/dateToImage&gt;&#xd;
-         &lt;priority&gt;1&lt;/priority&gt;&#xd;
+         &lt;dateToImage&gt;2021-06-30T18:25:00+00:00&lt;/dateToImage&gt;&#xd;
+         &lt;priority&gt;3&lt;/priority&gt;&#xd;
       &lt;/wsp:updatedPriorityElement&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
 &lt;/soapenv:Envelope&gt;</stringProp>
@@ -412,6 +471,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="TestPlan.comments">Changes the priority for scheduled imager tasks</stringProp>
         </HTTPSamplerProxy>
         <hashTree>
           <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
@@ -428,7 +488,7 @@
           </HeaderManager>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="uploadImage" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="uploadImage - deprecated?" enabled="false">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -441,12 +501,12 @@
          &lt;wrapper&gt;&#xd;
             &lt;!--Zero or more repetitions:--&gt;&#xd;
             &lt;item&gt;&#xd;
-               &lt;robot&gt;&#xd;
-                  &lt;iD&gt;?&lt;/iD&gt;&#xd;
-                  &lt;name&gt;?&lt;/name&gt;&#xd;
+        	    &lt;robot&gt;&#xd;
+                &lt;iD&gt;${robotID}&lt;/iD&gt;&#xd;
+                &lt;name&gt;${robotName}&lt;/name&gt;&#xd;
                &lt;/robot&gt;&#xd;
                &lt;imagingID&gt;?&lt;/imagingID&gt;&#xd;
-               &lt;plateID&gt;?&lt;/plateID&gt;&#xd;
+	          &lt;plateID&gt;${containerName}&lt;/plateID&gt;&#xd;
                &lt;well&gt;?&lt;/well&gt;&#xd;
                &lt;url&gt;?&lt;/url&gt;&#xd;
                &lt;image&gt;&#xd;
@@ -482,6 +542,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="TestPlan.comments">This method does not actually have a full implementation in SynchWeb. It just sends a response rather than changing anything in ISPyB.</stringProp>
         </HTTPSamplerProxy>
         <hashTree>
           <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
